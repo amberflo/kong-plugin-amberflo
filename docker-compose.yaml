@@ -28,7 +28,7 @@ networks:
 
 services:
   kong-migrations:
-    image: "kong:latest"
+    image: "kong:3.0-ubuntu"
     command: kong migrations bootstrap
     depends_on:
       - db
@@ -41,7 +41,7 @@ services:
     restart: on-failure
 
   kong-migrations-up:
-    image: "kong:latest"
+    image: "kong:3.0-ubuntu"
     command: kong migrations up && kong migrations finish
     depends_on:
       - db
@@ -54,7 +54,7 @@ services:
     restart: on-failure
 
   kong:
-    image: "kong:latest"
+    image: "kong:3.0-ubuntu"
     user: kong
     environment:
       <<: *kong-env
@@ -81,11 +81,12 @@ services:
       timeout: 10s
       retries: 10
     restart: on-failure:5
-    read_only: true
     volumes:
-      - kong_prefix_vol:${KONG_PREFIX:-/var/run/kong}
+      - kong_prefix_vol:/var/run/kong
       - kong_tmp_vol:/tmp
       - ./config:/opt/kong
+      - ./build:/opt/amberflo
+      - ./kong.conf:/etc/kong/kong.conf
     security_opt:
       - no-new-privileges
 
@@ -103,8 +104,6 @@ services:
       timeout: 10s
       retries: 3
     restart: on-failure
-    stdin_open: true
-    tty: true
     networks:
       - kong-net
     volumes:
