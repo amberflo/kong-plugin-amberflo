@@ -1,0 +1,8 @@
+{
+    "name": "metering",
+    "config": {
+        "apiKey": "",
+        "meterApiName": "kong-api-calls",
+        "customerHeader": "x-consumer-username"
+    }
+}
