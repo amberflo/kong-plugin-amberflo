@@ -2,8 +2,8 @@ cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMT
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/Kong/go-pdk v0.8.0 h1:5HvFuADux2KUOxoEEESie0s1wlFJdNzTl3IQ+UKokyo=
 github.com/Kong/go-pdk v0.8.0/go.mod h1:D6tpamZZ1hZp3PEksGCbvlS+g0J2RhGTw7eZW3D7v5I=
-github.com/amberflo/metering-go v1.9.0 h1:u54KHnm3SAcSMK1NxSe6o7pvo3q2xzwcjFM3+xy7fPM=
-github.com/amberflo/metering-go v1.9.0/go.mod h1:K0HkQGBJ4jb5zOF7dsflBA0nlZzAVnDJ8WV7mBf5kW0=
+github.com/amberflo/metering-go/v2 v2.0.2 h1:CuZFO2wWS4Lb1smnXQ8gfcRTJP3Rxywhoz1pIh/dHy8=
+github.com/amberflo/metering-go/v2 v2.0.2/go.mod h1:6IGhO3TgPMXhg5h/u0SC1NuQEhX7mU3MfEPBAfq1aXI=
 github.com/bmizerany/assert v0.0.0-20160611221934-b7ed37b82869 h1:DDGfHa7BWjL4YnC6+E63dPcxHo2sUxDIu8g3QgEJdRY=
 github.com/bmizerany/assert v0.0.0-20160611221934-b7ed37b82869/go.mod h1:Ekp36dRnpXw/yCqJaO+ZrUyxD+3VXMFFr56k5XYrpB4=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=

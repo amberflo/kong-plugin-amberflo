@@ -7,7 +7,7 @@ import (
 
 	"github.com/Kong/go-pdk"
 	"github.com/Kong/go-pdk/server"
-	"github.com/amberflo/metering-go"
+	"github.com/amberflo/metering-go/v2"
 	"github.com/xtgo/uuid"
 )
 
