@@ -1,6 +1,57 @@
-# Kong Plugin
+# Amberflo Kong Metering Plugin
 
-# How to Use
+<p>
+    <a href="https://github.com/amberflo/kong-plugin/actions">
+        <img alt="CI Status" src="https://github.com/amberflo/kong-plugin/actions/workflows/test.yml/badge.svg?branch=main">
+    </a>
+</p>
+
+[Amberflo](https://amberflo.io) is the simplest way to integrate metering into your application. [Sign up for free](https://ui.amberflo.io/) to get started.
+
+This if the official Amberflo plugin for Kong. Use it to meter the requests handled by your Kong instance and monetize your APIs. Check out [our docs](https://docs.amberflo.io/docs) to learn more.
+
+## :zap: How it Works
+
+This plugin will intercept the requests, detect which customer is making it, generate a meter event and send it to Amberflo.
+
+Customer detection happens via inspection of the request headers. So, you can configure Kong to inject the customer id as a header before this plugin runs. If you use Kong's [Key Authentication](https://docs.konghq.com/hub/kong-inc/key-auth/) plugin, this happens by automatically.
+
+To avoid impacting the performance of your gateway, the plugin will batch the meter records and send them asynchronously to Amberflo.
+
+## :rocket: Installation
+
+1. Compile and make the binary available to your Kong instance.
+    - Make sure your compilation environment is compatible with your Kong environment, otherwise the compile binary won't work.
+
+2. Update your Kong configuration, telling it the metering plugin is available.
+    - For instance. Suppose you place the plugin server binary at `/opt/amberflo/metering` on the Kong server. Then the plugin-related parts of your `kong.conf` file should look like [this one](./kong.conf).
+    - For more details on how to configure Kong, checkout their docs [here](https://docs.konghq.com/gateway/latest/plugin-development/pluginserver/go/#example-configuration) and [here](https://docs.konghq.com/gateway/latest/reference/configuration/)
+
+3. Enable the plugin
+    - Either by adding it to your `kong.yaml` file or making an Admin API request.
+
+## :scroll: Configuration
+
+Please find a sample configuration file [here](./metering.json).
+
+Here's a breakdown of the fields and their meaning.
+
+| Name             | Type              | Required? | Default      | Description                                                                 |
+|------------------|-------------------|-----------|--------------|-----------------------------------------------------------------------------|
+| apiKey           | string            | yes       |              | Your Amberflo API key                                                       |
+| meterApiName     | string            | yes       |              | The meter that will be use to meter the requests                            |
+| customerHeader   | string            | yes       |              | The header from which to get the `customerId`                               |
+| intervalSeconds  | int               | no        | `1`          | Send the meter record batch every `x` seconds                               |
+| batchSize        | int               | no        | `10`         | Send the meter record batch when it reaches this size                       |
+| debug            | bool              | no        | `false`      | Enable debug mode of the Amberflo API client (for development)              |
+| methodDimension  | string            | no        |              | Name of the dimension for the request method                                |
+| hostDimension    | string            | no        |              | Name of the dimension for the target url host                               |
+| routeDimension   | string            | no        |              | Name of the dimension for the route name                                    |
+| serviceDimension | string            | no        |              | Name of the dimension for the service name                                  |
+| dimensionHeaders | map[string]string | no        |              | Map of "dimension name" to "header name", for inclusion in the meter record |
+| replacements     | map[string]string | no        | `{"/": ":"}` | Map of "old" to "new" values for transforming dimension values              |
+
+## :construction_worker: Developers
 
 1. Build the plugin
 
@@ -10,20 +61,31 @@ make
 
 2. Start Kong. We're using `docker-compose`, based on [their template](https://github.com/Kong/docker-kong/tree/master/compose):
 ```sh
-docker-compose up -d
+make kong-up
 ```
 
 3. On the first time, setup a test service, route and user (see [this tutorial](https://docs.konghq.com/gateway/3.0.x/get-started/key-authentication/))
 ```sh
-./setup-kong.sh
+make kong-init
 ```
 
 4. Restart the kong server whenever you rebuild the plugin
+```sh
+make update
+```
 
 5. Use the helper scripts to interact with Kong:
-```
-./scripts/admin.sh POST /plugins -d '{"name": "metering"}'
+```sh
+./scripts/admin.sh GET /plugins
 ./scripts/test.sh GET /mock/requests -H 'x-api-key: super-secret-key' -i
 ```
 
-On use the commands in the [Makefile](./Makefile).
+6. To update the plugin configuration:
+```sh
+./scripts/admin.sh PUT /plugins/<plugin-id> -d @metering.json
+```
+
+7. To stop and clean-up docker resources
+```sh
+make kong-down
+```

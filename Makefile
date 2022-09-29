@@ -5,7 +5,7 @@ metering: metering.go
 	go build -o build/ metering.go
 
 .PHONY:
-kong: metering kong-restart
+update: metering kong-restart
 
 .PHONY:
 kong-restart:
