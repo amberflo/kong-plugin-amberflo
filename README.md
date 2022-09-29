@@ -22,6 +22,8 @@ docker-compose up -d
 
 5. Use the helper scripts to interact with Kong:
 ```
-./admin.sh POST /plugins -d '{"name": "metering"}'
-./test.sh GET /mock/requests -H 'x-api-key: super-secret-key' -i
+./scripts/admin.sh POST /plugins -d '{"name": "metering"}'
+./scripts/test.sh GET /mock/requests -H 'x-api-key: super-secret-key' -i
 ```
+
+On use the commands in the [Makefile](./Makefile).

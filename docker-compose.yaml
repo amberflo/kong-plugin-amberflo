@@ -65,7 +65,6 @@ services:
       KONG_PROXY_ACCESS_LOG: /dev/stdout
       KONG_PROXY_ERROR_LOG: /dev/stderr
       KONG_PREFIX: /var/run/kong
-      KONG_DECLARATIVE_CONFIG: /opt/kong/kong.yaml
     secrets:
       - kong_postgres_password
     networks:
@@ -84,7 +83,6 @@ services:
     volumes:
       - kong_prefix_vol:/var/run/kong
       - kong_tmp_vol:/tmp
-      - ./config:/opt/kong
       - ./build:/opt/amberflo
       - ./kong.conf:/etc/kong/kong.conf
     security_opt:
