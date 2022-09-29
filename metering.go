@@ -10,7 +10,10 @@ import (
 )
 
 func main() {
-	server.StartServer(New, Version, Priority)
+	err := server.StartServer(New, Version, Priority)
+	if err != nil {
+		log.Printf("Error starting plugin server: %s", err.Error())
+	}
 }
 
 const Version = "0.1"
@@ -29,7 +32,7 @@ func New() interface{} {
 func (conf Config) Access(kong *pdk.PDK) {
 	customerId, err := kong.Request.GetHeader(conf.CustomerHeader)
 	if err != nil {
-		log.Printf("Error reading '%s' header: %s", conf.CustomerHeader, err.Error())
+		log.Printf("Error reading header: '%s', %s", conf.CustomerHeader, err.Error())
 		return
 	}
 
@@ -52,8 +55,11 @@ func (conf Config) Access(kong *pdk.PDK) {
 		MeterValue:        1,
 	})
 	if err != nil {
-		log.Printf("Error metering request: %s", meteringErr)
+		log.Printf("Error metering request: %s", meteringErr.Error())
 	}
 
-	meteringClient.Shutdown()
+	shutdownErr := meteringClient.Shutdown()
+	if shutdownErr != nil {
+		log.Printf("Error during shutdown: %s", shutdownErr.Error())
+	}
 }
