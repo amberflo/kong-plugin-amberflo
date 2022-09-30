@@ -10,6 +10,10 @@
 
 This if the official Amberflo plugin for Kong. Use it to meter the requests handled by your Kong instance and monetize your APIs. Check out [our docs](https://docs.amberflo.io/docs) to learn more.
 
+```sh
+go install github.com/amberflo/kong-plugin-amberflo@latest
+```
+
 ## :zap: How it Works
 
 This plugin will intercept the requests, detect which customer is making it, generate a meter event and send it to Amberflo.
