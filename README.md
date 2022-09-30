@@ -39,15 +39,15 @@ Here's a breakdown of the fields and their meaning.
 | Name             | Type              | Required? | Default      | Description                                                                 |
 |------------------|-------------------|-----------|--------------|-----------------------------------------------------------------------------|
 | apiKey           | string            | yes       |              | Your Amberflo API key                                                       |
-| meterApiName     | string            | yes       |              | The meter that will be use to meter the requests                            |
-| customerHeader   | string            | yes       |              | The header from which to get the `customerId`                               |
+| meterApiName     | string            | yes       |              | Meter for metering the requests                                             |
+| customerHeader   | string            | yes       |              | Header from which to get the Amberflo `customerId`                          |
 | intervalSeconds  | int               | no        | `1`          | Send the meter record batch every `x` seconds                               |
 | batchSize        | int               | no        | `10`         | Send the meter record batch when it reaches this size                       |
 | debug            | bool              | no        | `false`      | Enable debug mode of the Amberflo API client (for development)              |
-| methodDimension  | string            | no        |              | Name of the dimension for the request method                                |
-| hostDimension    | string            | no        |              | Name of the dimension for the target url host                               |
-| routeDimension   | string            | no        |              | Name of the dimension for the route name                                    |
-| serviceDimension | string            | no        |              | Name of the dimension for the service name                                  |
+| methodDimension  | string            | no        |              | Dimension name for the request method                                       |
+| hostDimension    | string            | no        |              | Dimension name for the target url host                                      |
+| routeDimension   | string            | no        |              | Dimension name for the route name                                           |
+| serviceDimension | string            | no        |              | Dimension name for the service name                                         |
 | dimensionHeaders | map[string]string | no        |              | Map of "dimension name" to "header name", for inclusion in the meter record |
 | replacements     | map[string]string | no        | `{"/": ":"}` | Map of "old" to "new" values for transforming dimension values              |
 

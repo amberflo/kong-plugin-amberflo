@@ -31,16 +31,16 @@ const Version = "0.2"
 const Priority = 10
 
 type Config struct {
-	ApiKey           string            `json:"apiKey"`           // required
-	MeterApiName     string            `json:"meterApiName"`     // required
-	CustomerHeader   string            `json:"customerHeader"`   // required; get the customer id from this header
+	ApiKey           string            `json:"apiKey"`           // required; your amberflo api key
+	MeterApiName     string            `json:"meterApiName"`     // required; meter for metering the requests
+	CustomerHeader   string            `json:"customerHeader"`   // required; header from which to get the amberflo customer id
 	IntervalSeconds  int               `json:"intervalSeconds"`  // send the meter record batch every x seconds
 	BatchSize        int               `json:"batchSize"`        // send the meter record batch when it reaches this size
-	Debug            bool              `json:"debug"`            // passed to the amberflo metering client
-	MethodDimension  string            `json:"methodDimension"`  // name of the dimension for the request method
-	HostDimension    string            `json:"hostDimension"`    // name of the dimension for the target url host
-	RouteDimension   string            `json:"routeDimension"`   // name of the dimension for the route name
-	ServiceDimension string            `json:"serviceDimension"` // name of the dimension for the service name
+	Debug            bool              `json:"debug"`            // enable debug mode of the amberflo api client (for development)
+	MethodDimension  string            `json:"methodDimension"`  // dimension name for the request method
+	HostDimension    string            `json:"hostDimension"`    // dimension name for the target url host
+	RouteDimension   string            `json:"routeDimension"`   // dimension name for the route name
+	ServiceDimension string            `json:"serviceDimension"` // dimension name for the service name
 	DimensionHeaders map[string]string `json:"dimensionHeaders"` // map of "dimension name" to "header name", for inclusion in the meter record
 	Replacements     map[string]string `json:"replacements"`     // map of "old" to "new" values for transforming dimension values
 }
@@ -122,14 +122,13 @@ func (conf Config) Access(kong *pdk.PDK) {
 	}
 
 	// Meter the request
-	conf.meter(customerId, meterApiName, dimensions)
+	client := getMeteringClient(&conf)
+	meter(client, customerId, meterApiName, dimensions)
 }
 
-// Meter a request. This will actually queue the meter record for asynchronous
-// batching.
-func (conf *Config) meter(customerId string, meterApiName string, dimensions map[string]string) {
-	client := conf.getClient()
-
+// Helper method. Meter a request. This will actually queue the meter record
+// for asynchronous batching.
+func meter(client *metering.Metering, customerId string, meterApiName string, dimensions map[string]string) {
 	err := client.Meter(&metering.MeterMessage{
 		UniqueId:          uuid.NewRandom().String(),
 		CustomerId:        customerId,
@@ -148,7 +147,7 @@ func (conf *Config) meter(customerId string, meterApiName string, dimensions map
 var client *metering.Metering
 
 // Get the metering client, initializing it if necessary.
-func (conf *Config) getClient() *metering.Metering {
+func getMeteringClient(conf *Config) *metering.Metering {
 
 	if client == nil {
 		intervalSeconds := time.Second * time.Duration(conf.IntervalSeconds)
