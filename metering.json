@@ -3,6 +3,11 @@
     "config": {
         "apiKey": "",
         "meterApiName": "kong-api-calls",
-        "customerHeader": "x-consumer-username"
+        "customerHeader": "x-consumer-username",
+        "methodDimension": "method",
+        "hostDimension": "host",
+        "routeDimension": "route",
+        "serviceDimension": "service",
+        "dimensionHeaders": {}
     }
 }
