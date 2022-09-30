@@ -1,4 +1,4 @@
-module github.com/amberflo/kong-plugin
+module github.com/amberflo/kong-plugin-amberflo
 
 go 1.18
 
