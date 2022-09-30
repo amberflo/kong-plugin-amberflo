@@ -1,4 +1,4 @@
-module amberflo/kong-plugin-metering
+module github.com/amberflo/kong-plugin
 
 go 1.18
 
