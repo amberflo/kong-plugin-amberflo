@@ -1,7 +1,7 @@
 .PHONY:
 all: metering
 
-metering: metering.go
+metering: go.mod go.sum metering.go
 	go build -o build/ metering.go
 
 .PHONY:
