@@ -18,7 +18,7 @@ kong-up: metering
 .PHONY:
 kong-down:
 	docker-compose down
-	docker volume rm kong-plugin_kong_data
+	docker volume rm kong-plugin-amberflo_kong_data
 
 .PHONY:
 kong-init: setup-mockbin setup-mike enable-key-auth setup-metering
