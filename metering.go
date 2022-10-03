@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/Kong/go-pdk"
@@ -145,11 +146,12 @@ func meter(client *metering.Metering, customerId string, meterApiName string, di
 // We'll use the same metering client for all requests, to benefit of its
 // batching behavior.
 var client *metering.Metering
+var once = sync.Once{}
 
 // Get the metering client, initializing it if necessary.
 func getMeteringClient(conf *Config) *metering.Metering {
 
-	if client == nil {
+	once.Do(func() {
 		intervalSeconds := time.Second * time.Duration(conf.IntervalSeconds)
 		batchSize := conf.BatchSize
 		debug := conf.Debug
@@ -160,7 +162,7 @@ func getMeteringClient(conf *Config) *metering.Metering {
 			metering.WithIntervalSeconds(intervalSeconds),
 			metering.WithDebug(debug),
 		)
-	}
+	})
 
 	return client
 }
