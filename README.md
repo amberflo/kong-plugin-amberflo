@@ -16,20 +16,20 @@ go install github.com/amberflo/kong-plugin-amberflo@latest
 
 ## :zap: How it Works
 
-This plugin will intercept the requests, detect which customer is making it, generate a meter event and send it to Amberflo.
+This plugin will intercept the requests, detect which customer is making the request, generate a meter event and send it to Amberflo.
 
-Customer detection happens via inspection of the request headers. So, you can configure Kong to inject the customer id as a header before this plugin runs. If you use Kong's [Key Authentication](https://docs.konghq.com/hub/kong-inc/key-auth/) plugin, this happens by automatically.
+Customer detection happens via inspection of the request headers. You can configure Kong to inject the customer id as a header before this plugin runs. For instance, if you use Kong's [Key Authentication](https://docs.konghq.com/hub/kong-inc/key-auth/) plugin, this happens automatically.
 
-To avoid impacting the performance of your gateway, the plugin will batch the meter records and send them asynchronously to Amberflo.
+To avoid impacting the performance of your gateway, the plugin will batch meter records and send them asynchronously to Amberflo.
 
 ## :rocket: Installation
 
 1. Compile and make the binary available to your Kong instance.
     - Make sure your compilation environment is compatible with your Kong environment, otherwise the compile binary won't work.
 
-2. Update your Kong configuration, telling it the metering plugin is available.
+2. Update your Kong configuration with the now-available metering plugin.
     - For instance. Suppose you place the plugin server binary at `/opt/amberflo/metering` on the Kong server. Then the plugin-related parts of your `kong.conf` file should look like [this one](./kong.conf).
-    - For more details on how to configure Kong, checkout their docs [here](https://docs.konghq.com/gateway/latest/plugin-development/pluginserver/go/#example-configuration) and [here](https://docs.konghq.com/gateway/latest/reference/configuration/)
+    - For more details on how to configure Kong, check out their docs [here](https://docs.konghq.com/gateway/latest/plugin-development/pluginserver/go/#example-configuration) and [here](https://docs.konghq.com/gateway/latest/reference/configuration/)
 
 3. Enable the plugin
     - Either by adding it to your `kong.yaml` file or making an Admin API request.
@@ -38,7 +38,7 @@ To avoid impacting the performance of your gateway, the plugin will batch the me
 
 Please find a sample configuration file [here](./metering.json).
 
-Here's a breakdown of the fields and their meaning.
+Here's a breakdown of the fields and their respective meanings.
 
 | Name             | Type              | Required? | Default      | Description                                                                 |
 |------------------|-------------------|-----------|--------------|-----------------------------------------------------------------------------|
