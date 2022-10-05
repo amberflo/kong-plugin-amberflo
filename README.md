@@ -8,7 +8,7 @@
 
 [Amberflo](https://amberflo.io) is the simplest way to integrate metering into your application. [Sign up for free](https://ui.amberflo.io/) to get started.
 
-This if the official Amberflo plugin for Kong. Use it to meter the requests handled by your Kong instance and monetize your APIs. Check out [our docs](https://docs.amberflo.io/docs) to learn more.
+This is the official Amberflo plugin for Kong. Use it to meter the requests handled by your Kong instance and monetize your APIs. Check out [our docs](https://docs.amberflo.io/docs) to learn more.
 
 ```sh
 go install github.com/amberflo/kong-plugin-amberflo@latest
