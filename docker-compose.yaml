@@ -28,7 +28,7 @@ networks:
 
 services:
   kong-migrations:
-    image: "kong:3.0-ubuntu"
+    build: .
     command: kong migrations bootstrap
     depends_on:
       - db
@@ -41,7 +41,7 @@ services:
     restart: on-failure
 
   kong-migrations-up:
-    image: "kong:3.0-ubuntu"
+    build: .
     command: kong migrations up && kong migrations finish
     depends_on:
       - db
@@ -54,7 +54,7 @@ services:
     restart: on-failure
 
   kong:
-    image: "kong:3.0-ubuntu"
+    build: .
     user: kong
     environment:
       <<: *kong-env
